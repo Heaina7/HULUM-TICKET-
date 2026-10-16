@@ -1,0 +1,214 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* ============================================================================
+   HULUM TICKET — DESIGN TOKENS
+   ----------------------------------------------------------------------------
+   Brand: deep navy + a warm gold accent, taken from the company logo (a
+   route/ticket mark in blue with a gold flag). The one deliberately bold
+   idea in this system is the "departure board" motif on the live clock and
+   status badges — a nod to the fact that this is an attendance system built
+   by a ticketing company, where "on time" already means something to the
+   brand. Everything else is kept quiet on purpose.
+   ========================================================================== */
+
+:root {
+  --background: hsl(210 20% 98%);
+  --foreground: hsl(222 47% 11%);
+
+  --card: hsl(0 0% 100%);
+  --card-foreground: hsl(222 47% 11%);
+  --popover: hsl(0 0% 100%);
+  --popover-foreground: hsl(222 47% 11%);
+
+  --primary: hsl(220 70% 37%);
+  --primary-foreground: hsl(0 0% 100%);
+
+  --secondary: hsl(210 25% 95%);
+  --secondary-foreground: hsl(222 47% 15%);
+
+  --muted: hsl(210 20% 95%);
+  --muted-foreground: hsl(215 16% 45%);
+
+  --accent: hsl(210 25% 94%);
+  --accent-foreground: hsl(222 47% 15%);
+
+  --destructive: hsl(0 72% 51%);
+  --destructive-foreground: hsl(0 0% 100%);
+
+  --success: hsl(142 60% 32%);
+  --success-foreground: hsl(142 70% 22%);
+  --warning: hsl(38 85% 45%);
+  --warning-foreground: hsl(28 75% 30%);
+
+  --border: hsl(214 20% 89%);
+  --input: hsl(214 20% 89%);
+  --ring: hsl(220 70% 37%);
+
+  /* Brand gold — reserved for the departure-board clock, the kiosk brand
+     mark, and the active-nav-item indicator. Not a general "accent". */
+  --gold: hsl(38 68% 47%);
+  --gold-foreground: hsl(32 45% 18%);
+
+  --chart-1: hsl(220 70% 45%);
+  --chart-2: hsl(38 68% 50%);
+  --chart-3: hsl(142 60% 38%);
+  --chart-4: hsl(280 45% 55%);
+  --chart-5: hsl(0 65% 55%);
+
+  --radius: 0.625rem;
+
+  /* Sidebar — deep navy, distinct from the light dashboard surface. */
+  --sidebar: hsl(222 47% 9%);
+  --sidebar-foreground: hsl(212 20% 88%);
+  --sidebar-primary: var(--gold);
+  --sidebar-primary-foreground: hsl(32 45% 14%);
+  --sidebar-accent: hsl(222 40% 16%);
+  --sidebar-accent-foreground: hsl(0 0% 100%);
+  --sidebar-border: hsl(222 38% 18%);
+  --sidebar-ring: var(--gold);
+
+  --font-sans: var(--font-inter), "Segoe UI", sans-serif;
+  --font-display: var(--font-space-grotesk), var(--font-sans);
+  --font-ethiopic: var(--font-noto-ethiopic), "Nyala", sans-serif;
+}
+
+.dark {
+  --background: hsl(222 47% 7%);
+  --foreground: hsl(210 20% 92%);
+
+  --card: hsl(222 45% 10%);
+  --card-foreground: hsl(210 20% 92%);
+  --popover: hsl(222 45% 10%);
+  --popover-foreground: hsl(210 20% 92%);
+
+  --primary: hsl(217 80% 62%);
+  --primary-foreground: hsl(222 47% 10%);
+
+  --secondary: hsl(222 35% 15%);
+  --secondary-foreground: hsl(210 20% 92%);
+
+  --muted: hsl(222 35% 15%);
+  --muted-foreground: hsl(215 15% 65%);
+
+  --accent: hsl(222 35% 17%);
+  --accent-foreground: hsl(210 20% 92%);
+
+  --destructive: hsl(0 72% 58%);
+  --destructive-foreground: hsl(0 0% 100%);
+
+  --success: hsl(142 55% 48%);
+  --success-foreground: hsl(142 60% 80%);
+  --warning: hsl(38 80% 55%);
+  --warning-foreground: hsl(38 70% 82%);
+
+  --border: hsl(222 30% 20%);
+  --input: hsl(222 30% 20%);
+  --ring: hsl(217 80% 62%);
+
+  --gold: hsl(38 75% 58%);
+  --gold-foreground: hsl(32 55% 12%);
+
+  --sidebar: hsl(222 50% 6%);
+  --sidebar-foreground: hsl(212 20% 88%);
+  --sidebar-primary: var(--gold);
+  --sidebar-primary-foreground: hsl(32 45% 14%);
+  --sidebar-accent: hsl(222 40% 13%);
+  --sidebar-accent-foreground: hsl(0 0% 100%);
+  --sidebar-border: hsl(222 38% 15%);
+  --sidebar-ring: var(--gold);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-gold: var(--gold);
+  --color-gold-foreground: var(--gold-foreground);
+
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  --font-sans: var(--font-sans);
+  --font-display: var(--font-display);
+  --font-ethiopic: var(--font-ethiopic);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+  h1, h2, h3, h4 {
+    @apply font-display;
+  }
+  [lang="am"], .font-ethiopic {
+    font-family: var(--font-ethiopic);
+  }
+}
+
+@layer utilities {
+  /* Departure-board digit flip — used only on the dashboard shell's live
+     clock, deliberately not reused anywhere else. */
+  @keyframes board-flip {
+    0% {
+      transform: rotateX(0deg);
+      opacity: 1;
+    }
+    49% {
+      opacity: 0.55;
+    }
+    50% {
+      transform: rotateX(90deg);
+      opacity: 0.55;
+    }
+    100% {
+      transform: rotateX(0deg);
+      opacity: 1;
+    }
+  }
+  .animate-board-flip {
+    animation: board-flip 0.5s ease-in-out;
+  }
+}
