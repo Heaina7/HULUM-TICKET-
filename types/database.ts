@@ -31,6 +31,7 @@ export interface Database {
           updated_at?: string;
         };
         Update: Partial<Database["public"]["Tables"]["branches"]["Insert"]>;
+        Relationships: [];
       };
       profiles: {
         Row: {
@@ -52,6 +53,7 @@ export interface Database {
           updated_at?: string;
         };
         Update: Partial<Database["public"]["Tables"]["profiles"]["Insert"]>;
+        Relationships: [];
       };
       employees: {
         Row: {
@@ -75,6 +77,7 @@ export interface Database {
           updated_at?: string;
         };
         Update: Partial<Database["public"]["Tables"]["employees"]["Insert"]>;
+        Relationships: [];
       };
       shifts: {
         Row: {
@@ -96,6 +99,7 @@ export interface Database {
           created_at?: string;
         };
         Update: Partial<Database["public"]["Tables"]["shifts"]["Insert"]>;
+        Relationships: [];
       };
       attendance: {
         Row: {
@@ -125,6 +129,7 @@ export interface Database {
           created_at?: string;
         };
         Update: Partial<Database["public"]["Tables"]["attendance"]["Insert"]>;
+        Relationships: [];
       };
       settings: {
         Row: {
@@ -140,6 +145,7 @@ export interface Database {
           updated_at?: string;
         };
         Update: Partial<Database["public"]["Tables"]["settings"]["Insert"]>;
+        Relationships: [];
       };
       holidays: {
         Row: {
@@ -157,6 +163,7 @@ export interface Database {
           created_at?: string;
         };
         Update: Partial<Database["public"]["Tables"]["holidays"]["Insert"]>;
+        Relationships: [];
       };
       announcements: {
         Row: {
@@ -174,6 +181,7 @@ export interface Database {
           created_at?: string;
         };
         Update: Partial<Database["public"]["Tables"]["announcements"]["Insert"]>;
+        Relationships: [];
       };
       audit_logs: {
         Row: {
@@ -193,6 +201,7 @@ export interface Database {
           created_at?: string;
         };
         Update: Partial<Database["public"]["Tables"]["audit_logs"]["Insert"]>;
+        Relationships: [];
       };
     };
     Views: Record<string, never>;
@@ -217,5 +226,6 @@ export interface Database {
       };
     };
     Enums: Record<string, never>;
+    CompositeTypes: Record<string, never>;
   };
 }
