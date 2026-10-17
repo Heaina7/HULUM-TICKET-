@@ -3,11 +3,6 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   reactStrictMode: true,
 
-  eslint: {
-    // Linting is run explicitly in CI (`npm run lint`) — see README.
-    ignoreDuringBuilds: false,
-  },
-
   images: {
     remotePatterns: [
       {
