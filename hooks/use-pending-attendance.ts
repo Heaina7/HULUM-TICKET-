@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { REALTIME_FALLBACK_POLL_MS } from "@/constants";
 import type { AttendanceRecord } from "@/types";
@@ -13,6 +13,18 @@ import type { AttendanceRecord } from "@/types";
  */
 export function usePendingAttendance(branchId: number, initial: AttendanceRecord[]) {
   const [records, setRecords] = useState<AttendanceRecord[]>(initial);
+
+  // useState only reads `initial` once. After approve/reject the server action
+  // revalidates the page and React hands us fresh `initial` data — pick it up,
+  // otherwise the list would keep showing requests that were already handled.
+  useEffect(() => {
+    setRecords(initial);
+  }, [initial]);
+
+  /** Drops a request from the list immediately, without waiting for a refetch. */
+  const remove = useCallback((id: number) => {
+    setRecords((prev) => prev.filter((r) => r.id !== id));
+  }, []);
 
   useEffect(() => {
     const supabase = createClient();
@@ -51,5 +63,5 @@ export function usePendingAttendance(branchId: number, initial: AttendanceRecord
     };
   }, [branchId]);
 
-  return records;
+  return { records, remove };
 }
