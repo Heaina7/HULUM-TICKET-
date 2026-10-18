@@ -30,7 +30,7 @@ export interface SubmitAttendanceResult {
  * The kiosk rules are enforced here, not just in the UI, because a disabled
  * button doesn't stop a direct call to this action:
  *   - check-in needs an open shift (or its grace period) and no earlier check-in today
- *   - check-out needs a check-in today and no earlier check-out today
+ *   - check-out needs an *approved* check-in today and no earlier check-out today
  */
 export async function submitAttendance(
   input: SubmitAttendanceInput
@@ -50,7 +50,7 @@ export async function submitAttendance(
     supabase.from("shifts").select("*").eq("branch_id", input.branchId),
     supabase
       .from("attendance")
-      .select("type")
+      .select("type, status")
       .eq("branch_id", input.branchId)
       .eq("employee_name", input.employeeName)
       .eq("eth_date", ethDate),
