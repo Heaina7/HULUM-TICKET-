@@ -9,7 +9,14 @@ import { Badge } from "@/components/ui/badge";
 import { approveAttendance, rejectAttendance } from "@/app/(dashboard)/requests/actions";
 import type { AttendanceRecord } from "@/types";
 
-export function RequestCard({ record }: { record: AttendanceRecord }) {
+export function RequestCard({
+  record,
+  onResolved,
+}: {
+  record: AttendanceRecord;
+  /** Called once the request is no longer pending, so the list can drop it. */
+  onResolved: (id: number) => void;
+}) {
   const [isPending, startTransition] = useTransition();
 
   function handle(action: "approve" | "reject") {
@@ -21,8 +28,11 @@ export function RequestCard({ record }: { record: AttendanceRecord }) {
 
       if (result.error) {
         toast.error(result.error);
+        // Someone else (or an earlier click) already handled it — it's stale, so remove it.
+        if (result.alreadyHandled) onResolved(record.id);
       } else {
         toast.success(action === "approve" ? "Approved" : "Rejected");
+        onResolved(record.id);
       }
     });
   }
