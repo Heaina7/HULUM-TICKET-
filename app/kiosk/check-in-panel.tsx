@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, useTransition } from "react";
+import { useEffect, useMemo, useState, useTransition } from "react";
 import { ArrowLeftIcon, CheckCircle2Icon, ClockIcon, LogInIcon, LogOutIcon, UserRoundIcon } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -8,7 +8,8 @@ import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useEmployeeAttendance } from "@/hooks/use-employee-attendance";
-import { getShiftStatus, type ShiftStatus } from "@/lib/shifts";
+import { anyShiftActive, getShiftStatus, type ShiftStatus } from "@/lib/shifts";
+import { zonedNow } from "@/lib/time";
 import { submitAttendance } from "@/app/kiosk/actions";
 import type { Branch, Employee, Shift } from "@/types";
 
@@ -39,7 +40,15 @@ export function CheckInPanel({
 }) {
   const { today, history, loading, refresh } = useEmployeeAttendance(branch.id, employee.name);
   const [isPending, startTransition] = useTransition();
-  const [now] = useState(() => new Date());
+  // Branch wall-clock time, refreshed so the shift badges and the Check in
+  // button follow the clock if the kiosk is left open on this screen.
+  const [now, setNow] = useState(() => zonedNow(branch.timezone));
+  useEffect(() => {
+    const id = setInterval(() => setNow(zonedNow(branch.timezone)), 30_000);
+    return () => clearInterval(id);
+  }, [branch.timezone]);
+
+  const shiftOpen = anyShiftActive(shifts, now);
 
   const hasCheckedIn = today.some((r) => r.type === "in");
   const hasCheckedOut = today.some((r) => r.type === "out");
@@ -116,12 +125,12 @@ export function CheckInPanel({
       <div className="mb-6 grid grid-cols-2 gap-3">
         <Button
           size="lg"
-          disabled={hasCheckedIn || isPending}
+          disabled={hasCheckedIn || !shiftOpen || isPending}
           onClick={() => handleAction("in")}
           className="h-auto flex-col gap-1.5 py-4"
         >
           <LogInIcon className="size-5" />
-          {pendingIn ? "Pending" : hasCheckedIn ? "Checked in" : "Check in"}
+          {pendingIn ? "Pending" : hasCheckedIn ? "Checked in" : !shiftOpen ? "Check-in closed" : "Check in"}
         </Button>
         <Button
           size="lg"
@@ -134,6 +143,10 @@ export function CheckInPanel({
           {pendingOut ? "Pending" : hasCheckedOut ? "Checked out" : "Check out"}
         </Button>
       </div>
+
+      {!shiftOpen && !hasCheckedIn && shifts.length > 0 && (
+        <p className="-mt-3 mb-5 text-xs text-muted-foreground">No shift is open right now.</p>
+      )}
 
       <h2 className="mb-2 text-xs font-medium tracking-wide text-muted-foreground uppercase">
         Recent activity
