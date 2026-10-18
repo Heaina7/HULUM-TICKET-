@@ -11,7 +11,7 @@ export type KioskAttendanceType = "in" | "out";
 export interface CheckAttendanceInput {
   type: KioskAttendanceType;
   /** This employee's records for the current Ethiopian date (pending or approved). */
-  todayRecords: { type: string }[];
+  todayRecords: { type: string; status?: string }[];
   /** All shifts configured for the branch. */
   shifts: ShiftLike[];
   /** Branch wall-clock time — see zonedNow() in lib/time.ts. */
@@ -27,6 +27,8 @@ export function checkAttendanceRules({
 }: CheckAttendanceInput): string | null {
   const hasIn = todayRecords.some((r) => r.type === "in");
   const hasOut = todayRecords.some((r) => r.type === "out");
+  // "done" = approved by a branch admin. A pending check-in doesn't count yet.
+  const hasApprovedIn = todayRecords.some((r) => r.type === "in" && r.status === "done");
 
   if (type === "in") {
     if (hasIn) return "You have already checked in today.";
@@ -37,5 +39,8 @@ export function checkAttendanceRules({
 
   if (!hasIn) return "You haven't checked in today, so you can't check out.";
   if (hasOut) return "You have already checked out today.";
+  if (!hasApprovedIn) {
+    return "Your check-in is still waiting for approval. You can check out once it has been approved.";
+  }
   return null;
 }
