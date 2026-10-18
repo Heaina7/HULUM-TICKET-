@@ -13,7 +13,7 @@ export function RequestsQueue({
   branchId: number;
   initialRecords: AttendanceRecord[];
 }) {
-  const records = usePendingAttendance(branchId, initialRecords);
+  const { records, remove } = usePendingAttendance(branchId, initialRecords);
 
   if (records.length === 0) {
     return (
@@ -28,7 +28,7 @@ export function RequestsQueue({
   return (
     <div className="flex flex-col gap-2.5">
       {records.map((record) => (
-        <RequestCard key={record.id} record={record} />
+        <RequestCard key={record.id} record={record} onResolved={remove} />
       ))}
     </div>
   );
