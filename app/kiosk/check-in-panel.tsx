@@ -52,6 +52,8 @@ export function CheckInPanel({
 
   const hasCheckedIn = today.some((r) => r.type === "in");
   const hasCheckedOut = today.some((r) => r.type === "out");
+  // Check-out only unlocks once an admin has approved the check-in.
+  const hasApprovedIn = today.some((r) => r.type === "in" && r.status === "done");
   const pendingIn = today.some((r) => r.type === "in" && r.status === "pending");
   const pendingOut = today.some((r) => r.type === "out" && r.status === "pending");
 
@@ -135,12 +137,18 @@ export function CheckInPanel({
         <Button
           size="lg"
           variant="secondary"
-          disabled={!checkoutEnabled || !hasCheckedIn || hasCheckedOut || isPending}
+          disabled={!checkoutEnabled || !hasApprovedIn || hasCheckedOut || isPending}
           onClick={() => handleAction("out")}
           className="h-auto flex-col gap-1.5 py-4"
         >
           <LogOutIcon className="size-5" />
-          {pendingOut ? "Pending" : hasCheckedOut ? "Checked out" : "Check out"}
+          {pendingOut
+            ? "Pending"
+            : hasCheckedOut
+              ? "Checked out"
+              : hasCheckedIn && !hasApprovedIn
+                ? "Awaiting approval"
+                : "Check out"}
         </Button>
       </div>
 
