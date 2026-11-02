@@ -1,7 +1,8 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { updateSession } from "@/lib/supabase/middleware";
 
-const PUBLIC_PATHS = ["/login", "/kiosk"];
+// /api/keepalive is called by Vercel Cron (no login session) — see app/api/keepalive/route.ts.
+const PUBLIC_PATHS = ["/login", "/kiosk", "/api/keepalive"];
 
 function isPublicPath(pathname: string): boolean {
   return PUBLIC_PATHS.some((p) => pathname === p || pathname.startsWith(`${p}/`));
